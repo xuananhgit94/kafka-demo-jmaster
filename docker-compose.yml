@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - 9092:9092
+    volumes:
+      - zkafka-data:/kafka/data
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://localhost:9092
+      KAFKA_LISTENERS: INSIDE://:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    networks:
+      - xuananh
+
+  zookeeper:
+    image: zookeeper
+    ports:
+      - 2181:2181
+    networks:
+      - xuananh
+
+networks:
+  xuananh:
+    driver: bridge
+
+volumes:
+  zkafka-data:
